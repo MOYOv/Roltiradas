@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiradas de Rol</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        input { margin: 5px; padding: 5px; width: 80px; }
+        button { margin: 5px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Simulador de Tiradas de Rol</h2>
+        <label>Velocidad Extrema: <input type="number" id="velExtrema" value="0"></label><br>
+        <label>Reflejos: <input type="number" id="reflejos" value="0"></label><br>
+        <label>Daño del Personaje: <input type="number" id="dano" value="0"></label><br>
+        <label>Fuerza Explosiva: <input type="number" id="fuerzaExplosiva" value="0"></label><br>
+        <label>Bloqueo: <input type="number" id="bloqueo" value="0"></label><br>
+        <label>Velocidad Explosiva: <input type="number" id="velExplosiva" value="0"></label><br>
+        <label>Aumento (%): <input type="number" id="aumento" value="100" min="100" max="500"></label><br>
+        
+        <button onclick="tirada('iniciativa')">Tirada de Iniciativa</button>
+        <button onclick="tirada('danio')">Tirada de Daño</button>
+        <button onclick="tirada('bloqueo')">Tirada de Bloqueo</button>
+        <button onclick="tirada('golpe')">Tirada para Golpear</button>
+        
+        <h3>Resultado: <span id="resultado">-</span></h3>
+    </div>
+
+    <script>
+        function tirada(tipo) {
+            let d20 = Math.floor(Math.random() * 20) + 1;
+            let velExtrema = parseInt(document.getElementById("velExtrema").value) || 0;
+            let reflejos = parseInt(document.getElementById("reflejos").value) || 0;
+            let dano = parseInt(document.getElementById("dano").value) || 0;
+            let fuerzaExplosiva = parseInt(document.getElementById("fuerzaExplosiva").value) || 0;
+            let bloqueo = parseInt(document.getElementById("bloqueo").value) || 0;
+            let velExplosiva = parseInt(document.getElementById("velExplosiva").value) || 0;
+            let aumento = parseInt(document.getElementById("aumento").value) / 100;
+            
+            let resultado = 0;
+            if (tipo === 'iniciativa') {
+                resultado = (d20 + velExtrema + reflejos) * aumento;
+            } else if (tipo === 'danio') {
+                resultado = (dano + fuerzaExplosiva) * aumento;
+            } else if (tipo === 'bloqueo') {
+                resultado = (reflejos + bloqueo) * aumento;
+            } else if (tipo === 'golpe') {
+                resultado = (d20 + velExplosiva) * aumento;
+            }
+            
+            document.getElementById("resultado").innerText = resultado.toFixed(2);
+        }
+    </script>
+</body>
+</html>
